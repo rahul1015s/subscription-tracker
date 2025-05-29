@@ -8,6 +8,8 @@ import authRouter from "./routes/auth.routes.js";
 import subscriptionRouter from "./routes/subscription.routes.js";
 import connectToDatabase from "./database/mongodb.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
+import arcjetMiddleware from "./middlewares/arcjet.middleware.js";
+import workflowRouter from "./routes/workflow.routes.js";
 
 const app = express();
 
@@ -22,11 +24,12 @@ app.use(express.urlencoded({ extended: false }));
 // This lets your app read cookies from the user's browser.
 // After this, you can access cookies using req.cookies
 app.use(cookieParser());
-
+app.use(arcjetMiddleware); // Arcjet Middleware must befor the routes
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/subscriptions', subscriptionRouter);
+app.use('/api/v1/workflows', workflowRouter);
 
 // ✅ Global error handler (should be after all routes)
 app.use(errorMiddleware);
